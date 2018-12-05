@@ -1,3 +1,4 @@
+import java.util.*;
 public class FracCalc {
 
     /**
@@ -9,6 +10,10 @@ public class FracCalc {
         // TODO: Read the input from the user and call produceAnswer with an equation
         // Checkpoint 1: Create a Scanner, read one line of input, pass that input to produceAnswer, print the result.
         // Checkpoint 2: Accept user input multiple times.
+    	Scanner console = new Scanner(System.in);
+    	System.out.println("Enter equation:");
+    	String input = console.nextLine();
+    	produceAnswer(input);
     }
     
     /**
@@ -20,6 +25,13 @@ public class FracCalc {
      */
     public static String produceAnswer(String input)
     { 
+    	int x = input.indexOf(" ");
+    	String first_num = input.substring(0,x);
+    	String operand = input.substring(x,x+2);
+    	String second_num = input.substring(x+3);
+    	System.out.println("first number = " + first_num);
+    	System.out.println("operand = " + operand);
+    	System.out.println("second number = " + second_num);
         // TODO: Implement this function to produce the solution to the input
         // Checkpoint 1: Return the second operand.  Example "4/5 * 1_2/4" returns "1_2/4".
         // Checkpoint 2: Return the second operand as a string representing each part.
@@ -30,7 +42,7 @@ public class FracCalc {
         // Final project: All answers must be reduced.
         //               Example "4/5 * 1_2/4" returns "1_1/5".
         
-        return "";
+        return second_num;
     }
 
     // TODO: Fill in the space below with helper methods
