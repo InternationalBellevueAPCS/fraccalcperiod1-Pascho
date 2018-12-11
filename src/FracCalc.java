@@ -13,10 +13,10 @@ public class FracCalc {
     	Scanner console = new Scanner(System.in);
     	String input = " ";
     	while (!(input.equals("0 + 0"))) {
-    	System.out.println("Enter equation:");
-    	input = console.nextLine();
-    	String y =produceAnswer(input);
-    	System.out.println(y);
+    		System.out.println("Enter equation:");
+    		input = console.nextLine();
+    		String y =produceAnswer(input);
+    		System.out.println(y);	
     	}
     }
     /**
@@ -91,7 +91,7 @@ public class FracCalc {
         		return "0";
         	//Otherwise, return the answer as normal
         	} else
-        	return answer;
+        		return answer;
 //------------------------------------------------------------------------------------------------------------------------------------------------
     	} else if (operator.equals("-")) {
     		if (d1 == 1 && d2 == 1) {
@@ -118,7 +118,7 @@ public class FracCalc {
         	if (n1 == 0 || d1 == 0) {
         		return "0";
         	} else
-        	return answer;
+        		return answer;
     	
 //------------------------------------------------------------------------------------------------------------------------------------------------        	
     	} else if (operator.equals("*")) {
@@ -138,7 +138,7 @@ public class FracCalc {
         	if (n1 == 0 || d1 == 0) {
         		return "0";
         	} else
-        	return answer;
+        		return answer;
 //-------------------------------------------------------------------------------------------------------------------------------------------------
     	} else if (operator.equals("/")) {
     		if (n1 == 0 && n2 == 0 && wn1 > 0 && wn2 > 0) {
