@@ -14,10 +14,9 @@ public class FracCalc {
     	String input = " ";
     	while (!(input.equals("0 + 0"))) {
     	System.out.println("Enter equation:");
-    	System.out.println("Input like this: 2 + 2,    2 + 2_1/3");
-    	System.out.println("Enter '0 + 0' to quit");
     	input = console.nextLine();
-    	produceAnswer(input);
+    	String y =produceAnswer(input);
+    	System.out.println(y);
     	}
     }
     /**
@@ -27,78 +26,225 @@ public class FracCalc {
      * @return the result of the fraction after it has been calculated.
      *      Example: return ==> "1_1/4"
      */
+    // TODO: Implement this function to produce the solution to the input
+    // Checkpoint 1: Return the second operand.  Example "4/5 * 1_2/4" returns "1_2/4".
+    // Checkpoint 2: Return the second operand as a string representing each part.
+    //               Example "4/5 * 1_2/4" returns "whole:1 numerator:2 denominator:4".
+    // Checkpoint 3: Evaluate the formula and return the result as a fraction.
+    //               Example "4/5 * 1_2/4" returns "6/5".
+    //               Note: Answer does not need to be reduced, but it must be correct.
+    // Final project: All answers must be reduced.
+    //               Example "4/5 * 1_2/4" returns "1_1/5".
     public static String produceAnswer(String input)
     { 
+    	if (input.indexOf(" ")<0) {
+    		System.out.println("Incorrect input");
+    		return " ";
+    	}
     	// "x" represents the first time we encounter a space in the input, I use this to determine where the first number is.
     	int x = input.indexOf(" ");
     	// The first number starts from the first index of the string and ends at the first space
     	String first_num = input.substring(0,x);
     	// the operand is one space after the first number
-    	String operator = input.substring(x,x+2);
+    	String operator = input.substring(x+1,x+2);
     	// the second number is one space after the operand, I don't know how long this number is so I leave the substring end 'open' to make sure I dont cut it off
     	String second_num = input.substring(x+3);
-
-    	//Checkpoint 2 stuff
-    	//Checks if the number is a mixed number by scanning for underscore
-    	if ((second_num.indexOf("_")>0)){
+    	String whole_num_1 = find_whole_number(first_num);
+    	String numerator_1 = find_numerator(first_num);
+    	String denominator_1 = find_denominator(first_num);
+    	String whole_num_2 = find_whole_number(second_num);
+    	String numerator_2 = find_numerator(second_num);
+    	String denominator_2 = find_denominator(second_num);  
+    	int wn1 = Integer.parseInt(whole_num_1);
+    	int n1 = Integer.parseInt(numerator_1);
+    	int d1 = Integer.parseInt(denominator_1);
+    	int wn2 = Integer.parseInt(whole_num_2);
+    	int n2 = Integer.parseInt(numerator_2);
+    	int d2 = Integer.parseInt(denominator_2);
+    	
+    	
+//---------------------------------------------------------------------------------------------------------------------------------------------------
+    	if (operator.equals("+")) {	
+    		if (d1 == 1 && d2 == 1) {
+    			int sum = wn1+wn2;
+    			String ret = Integer.toString(sum);
+    			return ret;
+    		}
+    	// If num is a mixed number, convert to normal fraction
+    		n1 = MixedToFrac(wn1,n1,d1);
+			n2 = MixedToFrac(wn2,n2,d2);
     		
-	    	String[] pieces = input.split(" ");
-	    	//Split the input by spaces to isolate numbers and operator
-	    	String[] num_2_pieces = second_num.split("_");
-	    	//Whole number is first index of the array
-	    	String whole_num = num_2_pieces[0];
-	    	//Fraction is the second index of the array
-	    	String frac = num_2_pieces[1];
-	    	//Split the fraction into numerator and denominator as they are seperated by the slash
-	    	String[] num_2_split = frac.split("/");
-	    	//Assign Numerator 
-	    	String numerator = num_2_split[0];
-	    	//Assign Denominator 
-	    	String denominator = num_2_split[1];
-	    	//Compile variables for return
-	    	String checkpoint2 = ("whole:" + whole_num + " " + "numerator:" + numerator + " " + "denominator:" + denominator );
-	    	System.out.println(checkpoint2);
-	    	return checkpoint2;
-        // TODO: Implement this function to produce the solution to the input
-        // Checkpoint 1: Return the second operand.  Example "4/5 * 1_2/4" returns "1_2/4".
-        // Checkpoint 2: Return the second operand as a string representing each part.
-        //               Example "4/5 * 1_2/4" returns "whole:1 numerator:2 denominator:4".
-        // Checkpoint 3: Evaluate the formula and return the result as a fraction.
-        //               Example "4/5 * 1_2/4" returns "6/5".
-        //               Note: Answer does not need to be reduced, but it must be correct.
-        // Final project: All answers must be reduced.
-        //               Example "4/5 * 1_2/4" returns "1_1/5".
-        
-
-        //Checks if the input is strictly a fraction 
-    } else if ((second_num.indexOf("/")>0)) {
-    	//stuff for fractions here
-    	//splits the fraction at the "/" which gives numerator and denominator 
-    	String[] num_2_split = second_num.split("/");
-    	String numerator = num_2_split[0];
-    	//Assigning Numerator from array
-    	String denominator = num_2_split[1];
-    	//Assigning Denominator from array
-    	String checkpoint2 = ("whole:" + "0" +" "+ "numerator:" + numerator + " " + "denominator:" + denominator );
-    	//Assigns values to variable for return
-    	System.out.println(checkpoint2);
-    	return checkpoint2;
-    //Executes if second number is just an integer 
-    } else if ((second_num.indexOf("/") == -1)) {
-    	//assign variables for return
-    	String checkpoint2 = ("whole:" + second_num + " " + "numerator:0" + " denominator:1");
-    	System.out.println(checkpoint2);
-    	return checkpoint2;
-    } else {
-    	String s = ("Inalid input!");
-    	System.out.println(s);
-    	return s;
-    }
+        	// if denominators are not the same, covert them.
+        	if (d1 != d2) {
+        		int temp_1 = d1;
+        		int temp_2 = d2;
+        		d1*=temp_2;
+        		n1*=temp_2;
+        		d2*=temp_1;
+        		n2*=temp_1;	
+        	} 
+        	n1+=n2;
+        	String answer = (Integer.toString(n1) + "/" + Integer.toString(d1));
+        	if (n1 == 0 || d1 == 0) {
+        		return "0";
+        	} else
+        	return answer;
+//------------------------------------------------------------------------------------------------------------------------------------------------
+    	} else if (operator.equals("-")) {
+    		if (d1 == 1 && d2 == 1) {
+    			int sum = wn1-wn2;
+    			String ret = Integer.toString(sum);
+    			return ret;
+    		}
+    	// If num1 is a mixed number, convert to normal fraction
+    		n1 = MixedToFrac(wn1,n1,d1);
+			n2 = MixedToFrac(wn2,n2,d2);  	
+    		
+        	// if denominators are not the same, covert them.
+        	if (d1 != d2) {
+        		int temp_1 = d1;
+        		int temp_2 = d2;
+        		d1*=temp_2;
+        		n1*=temp_2;
+        		d2*=temp_1;
+        		n2*=temp_1;	
+        	} 
+        	n1-=n2;
+        	String answer = (Integer.toString(n1) + "/" + Integer.toString(d1));
+        	if (n1 == 0 || d1 == 0) {
+        		return "0";
+        	} else
+        	return answer;
+    	
+//------------------------------------------------------------------------------------------------------------------------------------------------        	
+    	} else if (operator.equals("*")) {
+    		if (n1 == 0 && n2 == 0) {
+    			wn1 *= wn2;
+    			return (Integer.toString(wn1));
+    					
+    		}
+        	// If num1 is a mixed number, convert to normal fraction 
+    		n1 =MixedToFrac(wn1,n1,d1);
+    		n2 =MixedToFrac(wn2,n2,d2);
+        	
+    		n1*=n2;
+    		d1*=d2;
+        	String answer = (Integer.toString(n1) + "/" + Integer.toString(d1));
+        	if (n1 == 0 || d1 == 0) {
+        		return "0";
+        	} else
+        	return answer;
+//-------------------------------------------------------------------------------------------------------------------------------------------------
+    	} else if (operator.equals("/")) {
+    		if (n1 == 0 && n2 == 0 && wn1 > 0 && wn2 > 0) {
+           		String answer = (Integer.toString(wn1)+ "/" + Integer.toString(wn2));
+    			return answer;
+    		} else if (n1 == 0 && n2 == 0 && wn1 < 0 && wn2 < 0) {
+    			wn2 *= -1;
+    			String answer = (Integer.toString(wn1)+ "/" + Integer.toString(wn2));
+    			return answer;
+    		}
+    		n1 =MixedToFrac(wn1,n1,d1);
+    		n2 =MixedToFrac(wn2,n2,d2);  
+        	
+    		n1*=d2;
+    		d1*=n2;
+			String answer = (Integer.toString(n1)+ "/" + Integer.toString(d1));
+			
+    		if (n1 == 0 && d1 == 0) {
+    			return "0";
+    		} else 
+    			return answer;
+    		
+    	} else
+    		return "Something went wrong here";
     	
     	
     }
+    
+//------------------------------------------------------------------------------------------------------------------------------------------------
 
     // TODO: Fill in the space below with helper methods
+    //Method for finding the whole number of the entered parameter.
+    public static String find_whole_number(String num)
+    {
+    	if ((num.indexOf("_") > 0) || (num.indexOf("/") < 0)){
+	    	String[] pieces = num.split(" ");
+	    	//Split the input by spaces to isolate numbers and operator
+	    	String[] num_pieces = num.split("_");
+	    	//Whole number is first index of the array
+	    	String whole_num = num_pieces[0];
+	    	return whole_num;
+    	} else 
+    		return "0";
+    }
+        public static String find_numerator(String num)
+        {
+        	if ((num.indexOf("_")>0)){
+    	    	String[] pieces = num.split(" ");
+    	    	//Split the input by spaces to isolate numbers and operator
+    	    	String[] num_pieces = num.split("_");
+    	    	//Fraction is the second index of the array
+    	    	String frac = num_pieces[1];
+    	    	//Split the fraction into numerator and denominator as they are seperated by the slash
+    	    	String[] num_split = frac.split("/");
+    	    	//Assign Numerator 
+    	    	String numerator = num_split[0];
+    	    	return numerator;
+    	    //-------------------------------------------
+            //Checks if NUMBER 2 is strictly a fraction 
+    	    //-------------------------------------------
+        } else if ((num.indexOf("/")>0)) {
+        	//stuff for fractions here
+        	//splits the fraction at the "/" which gives numerator and denominator 
+        	String[] num_split = num.split("/");
+        	String numerator = num_split[0];
+        	return numerator;
+        	} else 
+        		return "0";
+    }
+        
+        public static String find_denominator(String num)
+        {
+        	if ((num.indexOf("_")>0)){
+    	    	String[] pieces = num.split(" ");
+    	    	//Split the input by spaces to isolate numbers and operator
+    	    	String[] num_pieces = num.split("_");
+    	    	//Fraction is the second index of the array
+    	    	String frac = num_pieces[1];
+    	    	//Split the fraction into numerator and denominator as they are seperated by the slash
+    	    	String[] num_split = frac.split("/");
+    	    	//Assign Denominator 
+    	    	String denominator = num_split[1];
+    	    	
+    	    	return denominator;
+    	    //-------------------------------------------
+            //Checks if NUMBER 2 is strictly a fraction 
+    	    //-------------------------------------------
+        } else if ((num.indexOf("/")>0)) {
+        	//stuff for fractions here
+        	//splits the fraction at the "/" which gives numerator and denominator 
+        	String[] num_split = num.split("/");
+        	String denominator = num_split[1];
+        	
+        	return denominator;
+        } else 
+        	return "1";
+    }
+        public static int MixedToFrac(int wn1, int n1, int d1) {
+		if (wn1 > 0) {
+			n1 += d1*wn1;	
+		}
+		if (wn1 < 0) {
+			wn1*=d1;
+			n1 *= -1;
+			n1+=wn1;
+			return n1;
+		}
+		return n1;
+		}
+    
+    
     
     /**
      * greatestCommonDivisor - Find the largest integer that evenly divides two integers.
