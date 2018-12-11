@@ -41,13 +41,15 @@ public class FracCalc {
     		System.out.println("Incorrect input");
     		return " ";
     	}
+    	//--------------VARIABLE DECLARATION--------------------
     	// "x" represents the first time we encounter a space in the input, I use this to determine where the first number is.
     	int x = input.indexOf(" ");
     	// The first number starts from the first index of the string and ends at the first space
     	String first_num = input.substring(0,x);
     	// the operand is one space after the first number
     	String operator = input.substring(x+1,x+2);
-    	// the second number is one space after the operand, I don't know how long this number is so I leave the substring end 'open' to make sure I dont cut it off
+    	// the second number is one space after the operand, I don't know how long this number is so I leave the substring end 'open' to make sure I don't cut it off
+    	
     	String second_num = input.substring(x+3);
     	String whole_num_1 = find_whole_number(first_num);
     	String numerator_1 = find_numerator(first_num);
@@ -60,10 +62,8 @@ public class FracCalc {
     	int d1 = Integer.parseInt(denominator_1);
     	int wn2 = Integer.parseInt(whole_num_2);
     	int n2 = Integer.parseInt(numerator_2);
-    	int d2 = Integer.parseInt(denominator_2);
-    	
-    	
-//---------------------------------------------------------------------------------------------------------------------------------------------------
+    	int d2 = Integer.parseInt(denominator_2);	
+//---------------**ADDITION OPERATIONS**----------------
     	if (operator.equals("+")) {	
     		if (d1 == 1 && d2 == 1) {
     			int sum = wn1+wn2;
@@ -84,9 +84,12 @@ public class FracCalc {
         		n2*=temp_1;	
         	} 
         	n1+=n2;
+        	//Combine Numerator and Denominator for return
         	String answer = (Integer.toString(n1) + "/" + Integer.toString(d1));
+        	//If both the numerator and Denominator are 0, return 0 instead of 0 + 0 
         	if (n1 == 0 || d1 == 0) {
         		return "0";
+        	//Otherwise, return the answer as normal
         	} else
         	return answer;
 //------------------------------------------------------------------------------------------------------------------------------------------------
@@ -111,6 +114,7 @@ public class FracCalc {
         	} 
         	n1-=n2;
         	String answer = (Integer.toString(n1) + "/" + Integer.toString(d1));
+        	//If both the numerator and denominator are 0, return 0 instead of 0 - 0
         	if (n1 == 0 || d1 == 0) {
         		return "0";
         	} else
@@ -130,6 +134,7 @@ public class FracCalc {
     		n1*=n2;
     		d1*=d2;
         	String answer = (Integer.toString(n1) + "/" + Integer.toString(d1));
+        	//If both the numerator and denominator are 0, return 0 instead of 0 * 0
         	if (n1 == 0 || d1 == 0) {
         		return "0";
         	} else
@@ -144,27 +149,25 @@ public class FracCalc {
     			String answer = (Integer.toString(wn1)+ "/" + Integer.toString(wn2));
     			return answer;
     		}
+    		//If the fraction is a mixed number, convert it to a normal fraction
     		n1 =MixedToFrac(wn1,n1,d1);
     		n2 =MixedToFrac(wn2,n2,d2);  
         	
     		n1*=d2;
     		d1*=n2;
 			String answer = (Integer.toString(n1)+ "/" + Integer.toString(d1));
-			
+			//if the answer would be 0 / 0, return 0
     		if (n1 == 0 && d1 == 0) {
     			return "0";
     		} else 
     			return answer;
-    		
+    		//This should never return but if it does my grade is going down
     	} else
     		return "Something went wrong here";
-    	
-    	
     }
-    
-//------------------------------------------------------------------------------------------------------------------------------------------------
-
+//---------------------------------------------------------------
     // TODO: Fill in the space below with helper methods
+    //-----------------------------------------------------------
     //Method for finding the whole number of the entered parameter.
     public static String find_whole_number(String num)
     {
@@ -178,8 +181,10 @@ public class FracCalc {
     	} else 
     		return "0";
     }
+    //Method for determining the numerators of a given input
         public static String find_numerator(String num)
         {
+        	//Checks if input is a mixed number to split
         	if ((num.indexOf("_")>0)){
     	    	String[] pieces = num.split(" ");
     	    	//Split the input by spaces to isolate numbers and operator
@@ -192,18 +197,17 @@ public class FracCalc {
     	    	String numerator = num_split[0];
     	    	return numerator;
     	    //-------------------------------------------
-            //Checks if NUMBER 2 is strictly a fraction 
+            //Checks if input is strictly a fraction 
     	    //-------------------------------------------
         } else if ((num.indexOf("/")>0)) {
-        	//stuff for fractions here
-        	//splits the fraction at the "/" which gives numerator and denominator 
         	String[] num_split = num.split("/");
         	String numerator = num_split[0];
         	return numerator;
+        	//Checks if the input is strictly a whole number
         	} else 
         		return "0";
     }
-        
+        //Method for finding denominator of a
         public static String find_denominator(String num)
         {
         	if ((num.indexOf("_")>0)){
@@ -216,10 +220,9 @@ public class FracCalc {
     	    	String[] num_split = frac.split("/");
     	    	//Assign Denominator 
     	    	String denominator = num_split[1];
-    	    	
     	    	return denominator;
     	    //-------------------------------------------
-            //Checks if NUMBER 2 is strictly a fraction 
+            //Checks if input is strictly a fraction 
     	    //-------------------------------------------
         } else if ((num.indexOf("/")>0)) {
         	//stuff for fractions here
@@ -235,6 +238,7 @@ public class FracCalc {
 		if (wn1 > 0) {
 			n1 += d1*wn1;	
 		}
+		//Process for converting a negative mixed number fraction
 		if (wn1 < 0) {
 			wn1*=d1;
 			n1 *= -1;
