@@ -356,9 +356,9 @@ public class FracCalc {
         	int gcd = greatestCommonDivisor(x,y);
         	if (gcd != 0) {
         		return x/gcd;
-        	} else
+        	} else 
         		return x;
-        	}
+        }
     /**
      * greatestCommonDivisor - Find the largest integer that evenly divides two integers.
      *      Use this helper method in the Final Checkpoint to reduce fractions.
